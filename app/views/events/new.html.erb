@@ -1,0 +1,30 @@
+<h1>Events#new</h1>
+<div class="container">
+<% if @event.errors.any? %>
+  <% @event.errors.full_messages.each do |message|%>\
+  <h3><%= message %> </h3>
+  <%end%>
+<%end%>
+
+<%= form_with model: @event do |form| %>
+  <div class="mb-3">
+    <%= form.label :title, class: "form-label" %>
+    <%= form.text_field :title, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= form.label :start_time, class: "form-label" %>
+    <%= form.datetime_local_field :start_time, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= form.label :end_time, class: "form-label" %>
+    <%= form.datetime_local_field :end_time, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= form.submit %>
+  </div>
+  <% end %>
+  <% console %>
+</div>
+  
+  
+  
