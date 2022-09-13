@@ -1,0 +1,34 @@
+<h1>Users#Show</h1>
+
+<% if user_signed_in? %>
+  <h1><%= current_user.name %>'s Events</h1>
+  <div class="container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Start Time</th>
+          <th scope="col">End Time</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+    <% current_user.events.each do |event| %>
+      <tr>
+        <td><%= event.title %></td>
+        <td><%= event.start_time %></td>
+        <td><%= event.end_time %></td>
+        <td>
+          <%= link_to "Edit", edit_event_path(event) %> |
+          <%= link_to "Delete", event, data: { turbo_method: :delete } %>
+        </td>
+      </tr>
+    <% end %>
+    <% else %>
+    <h1>Events</h1>
+    <p>Please <%= link_to "Log in", new_user_session_path %> to view your events</p>
+<% end%>
+    </tbody>
+  </table>
+</div>
+<% console %>

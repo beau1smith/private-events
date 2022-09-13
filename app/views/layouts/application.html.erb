@@ -20,11 +20,15 @@
       </div>
       <div class="navbar-nav ms-auto">
         <% if user_signed_in? %>
+          <p class="nav-item text-bg-dark">Hello <%= current_user.name %></p>
+          <%= link_to "All events", events_path, class: "nav-item nav-link" %>
+          <%= link_to "My events", user_path(current_user), class: "nav-item nav-link" %>
           <%= link_to "Create event", new_event_path, class: "nav-item nav-link" %>
           <%= link_to "Log out", destroy_user_session_path, method: :delete, class: "nav-item nav-link" %>
         <% else %>
-          <%= link_to "Sign up", new_user_registration_path %>
-          <%= link_to "Sign in", new_user_session_path%>
+          <%= link_to "All events", events_path, class: "nav-item nav-link" %>
+          <%= link_to "Sign up", new_user_registration_path, class: "nav-item nav-link" %>
+          <%= link_to "Sign in", new_user_session_path, class: "nav-item nav-link" %>
         <% end %>
       </div>
     </nav>

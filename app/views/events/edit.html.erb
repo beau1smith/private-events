@@ -1,0 +1,18 @@
+<h1>Events#Edit</h1>
+<p>edit your events here</p>
+
+<%= form_with model: @event, method: :patch do |form| %>
+  <div class="mb-3">
+    <%= form.label :title, "Title:"%>
+    <%= form.text_field :title %>
+  </div>
+  <div class="mb-3">
+    <%= form.label :start_time, "Start Time:" %>
+    <%= form.datetime_local_field :start_time %>
+  </div>
+  <div class="mb-3">
+    <%= form.label :end_time, "End Time:" %>
+    <%= form.datetime_local_field :end_time %>
+  </div>
+  <%= form.submit "Edit your event" %>
+<% end %>

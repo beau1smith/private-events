@@ -1,0 +1,28 @@
+<% if user_signed_in? %>
+  <h1><%= @event.title %></h1>
+  <div class="container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Start Time</th>
+          <th scope="col">End Time</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><%= @event.start_time %></td>
+        <td><%= @event.end_time %></td>
+        <td>
+          <%= link_to "Edit", edit_event_path(@event) %> |
+          <%= link_to "Delete", event_path(@event), data: { turbo_method: :delete } %>
+        </td>
+      </tr>
+    <% else %>
+    <h1>Events</h1>
+    <p>Please <%= link_to "Log in", new_user_session_path %> to view your events</p>
+<% end%>
+    </tbody>
+  </table>
+</div>
+<% console %>
