@@ -1,28 +1,61 @@
-<% if user_signed_in? %>
-  <h1><%= @event.title %></h1>
-  <div class="container">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Start Time</th>
-          <th scope="col">End Time</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td><%= @event.start_time %></td>
-        <td><%= @event.end_time %></td>
-        <td>
-          <%= link_to "Edit", edit_event_path(@event) %> |
-          <%= link_to "Delete", event_path(@event), data: { turbo_method: :delete } %>
-        </td>
-      </tr>
+<% if @event.start_time < Time.now %>
+  <div class="alert alert-secondary" role="alert">Registration for this event is now closed</div>
+<% end %>
+
+<div class="row mb-4">
+  <div class="col">
+    <h1><%= @event.title.titleize %></h1>
+  </div>
+  <div class="col text-right">
+    <% if current_user == @event.creator %>
+      <%= link_to 'Edit', edit_event_path, class: "btn btn-outline-secondary" %>
+      <%= link_to 'Delete', event_path, method: :delete, class: "btn btn-outline-secondary",
+                            data: { confirm: "Delete this event?"} %>
+    <% elsif @event.attendees.include?(current_user) %>
+      <%= link_to 'Cancel RSVP', cancel_rsvp_event_path, class: "btn btn-outline-secondary" %>
     <% else %>
-    <h1>Events</h1>
-    <p>Please <%= link_to "Log in", new_user_session_path %> to view your events</p>
-<% end%>
-    </tbody>
-  </table>
+      <%= link_to 'RSVP', rsvp_event_path, class: "btn btn-primary" unless @event.start_time < Time.now %>
+    <% end %>
+  </div>
 </div>
-<% console %>
+
+<div class="row mb-4">
+  <div class="col">
+    <div class="card">
+      <div class="row no-gutters">
+
+        <div class="col-md-8">
+          <div class="card-body">
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card-body">
+            <p class="text-muted">
+              <i class="far fa-user-circle text-dark fa-lg mr-1"></i>
+                Created by <%= link_to @event.creator.name, user_path(@event.creator) %>
+            </p>
+            <p class="text-muted">
+              <i class="far fa-calendar-alt text-dark fa-lg mr-1"></i>
+              <%= @event.start_time.strftime("%B %-d, %Y at %l:%M %p") %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class=" text-muted mb-4">ATTENDEES</p>
+
+<% if @event.attendees.empty? %>
+<div class="list-group">
+  <li class="list-group-item text-muted">This event has no attendees yet</li>
+</div>
+<% else %>
+  <div class="list-group">
+    <% @event.attendees.each do |attendee| %>
+    <li class="list-group-item"> <%= attendee.name %> </li>
+    <% end %>
+  </div>
+<% end %>

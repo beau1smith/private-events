@@ -4,7 +4,12 @@ Rails.application.routes.draw do
     sessions: 'users/sessions'
   }
   resources :users
-  resources :events
+  resources :events do
+    member do
+      get 'rsvp'
+      get 'cancel_rsvp'
+    end
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

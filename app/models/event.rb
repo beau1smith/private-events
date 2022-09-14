@@ -1,6 +1,8 @@
 class Event < ApplicationRecord
-  has_many :attendees, foreign_key: :event_id, class_name: "UserEvent"
-  has_many :attendees, through :user_events
+  belongs_to :creator, class_name: "User"
+  has_many :rsvps, foreign_key: :attended_event_id
+  has_many :attendees, through: :rsvps
   
-  belongs_to :user
+  scope :past, -> { where('start_time < ?', Date.today).order(date_time: :desc) }
+  scope :future, -> { where('start_time > ?', Date.today).order(:date_time) }
 end

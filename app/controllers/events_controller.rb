@@ -1,4 +1,5 @@
 class EventsController < ApplicationController
+before_action :authenticate_user!, except: [:index, :show]
 
   def index
     @events = Event.all
@@ -9,7 +10,8 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = current_user.events.build(event_params)
+    @event = current_user.created_events.build(event_params)
+    @event.user_id = current_user.id
 
     respond_to do |format|
       if @event.save
@@ -23,7 +25,7 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event = Event.find_by(params[:id])
+    @event = Event.find(params[:id])
   end
 
   def edit
@@ -31,7 +33,7 @@ class EventsController < ApplicationController
   end
 
   def update
-    @event = current_user.events.find(params[:id])
+    @event = Event.find(params[:id])
     respond_to do |format|
       if @event.update(params.require(:event).permit(:title, :name, :start_time, :end_time))
         format.html { redirect_to events_url(@event), notice: "Event was updated" }
@@ -42,7 +44,7 @@ class EventsController < ApplicationController
   end
 
   def destroy
-    @event = current_user.events.find(params[:id])
+    @event = Event.find(params[:id])
     @event.destroy
     
     respond_to do |format|
@@ -50,9 +52,24 @@ class EventsController < ApplicationController
     end
   end
 
+  def rsvp
+    @event = Event.find(params[:id])
+    if @event.attendees.include?(current_user)
+      redirect_to @event, notice: "You are already on the list"
+    else
+      @event.attendees << current_user
+      redirect_to @event
+    end
+  end
+
+  def cancel_rsvp
+    @event = Event.find(params[:id])
+    @event.attendees.delete(current_user)
+    redirect_to @event, notice: "You are no longer attending this event"
+  end
 private
 
   def event_params
-    params.require(:event).permit(:id, :title, :start_time, :end_time)
+    params.require(:event).permit(:id, :title, :start_time, :end_time, :user_id)
   end
 end

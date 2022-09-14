@@ -1,26 +1,37 @@
-<h1>Events#Index</h1>
-<div class="container">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">User #</th>
-          <th scope="col">Title</th>
-          <th scope="col">Creator</th>
-          <th scope="col">Start Time</th>
-          <th scope="col">End Time</th>
-        </tr>
-      </thead>
-      <tbody>
-    <% @events.each do |event| %>
-      <tr>
-        <td><%= event.user.id %></td>
-        <td><%= event.title %></td>
-        <td><%= event.user.name %></td>
-        <td><%= event.start_time %></td>
-        <td><%= event.end_time %></td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
-  <%console%>
+<div class="row mb-4">
+  <div class="col">
+    <h1>Upcoming Events</h1>
+  </div>
+  <div class="col">
+    <%= link_to 'Create Event', new_event_path, class: "btn btn-primary float-right" %>
+  </div>
+</div>
+
+<div class="row mb-5">
+  <% Event.future.each do |event| %>
+  <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title"><%= event.title.titleize %></h4>
+          <p class="small text-muted"><%= event.start_time.strftime("%B %-d, %Y") %></p>
+          <%= link_to 'Learn More', event_path(event), class: "btn btn-outline-primary btn-block" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<p class="text-muted">PAST EVENTS</p>
+<div class="row">
+  <% Event.past.each do |event| %>
+  <div class="col-md-3 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= event.title.titleize %></h5>
+          <p class="small text-muted"><%= event.start_time.strftime("%B %-d, %Y") %></p>
+          <%= link_to 'Learn More', event_path(event), class: "btn btn-outline-primary btn-block" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>
