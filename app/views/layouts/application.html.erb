@@ -13,7 +13,7 @@
   <body>
     <nav class="navbar navbar-expand navbar-dark bg-dark">
       <div class="container-fluid">
-        <%= link_to "Event Planner", root_path %>
+        <h1><%= link_to "Event Planner", root_path %></h1>
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -33,8 +33,11 @@
       </div>
     </nav>
     <div class="container">
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <% flash.each do |type, msg| %>
+      <div class="alert alert-info" role="alert">
+        <%= msg %>
+      </div>
+    <% end %>
       <%= yield %>
     </div>
   </body>
